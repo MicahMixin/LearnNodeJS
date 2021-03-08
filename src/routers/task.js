@@ -19,9 +19,15 @@ router.get("/tasks/:id", auth, async (req, res) => {
 
 router.get("/tasks", auth, async (req, res) => {
   const match = {};
+  const sort = {};
 
   if (req.query.completed) {
     match.completed = req.query.completed === "true";
+  }
+
+  if (req.query.sortBy) {
+    const params = req.query.sortBy.split(":");
+    sort[params[0]] = params[1] === "desc" ? -1 : 1;
   }
 
   try {
@@ -32,6 +38,7 @@ router.get("/tasks", auth, async (req, res) => {
         options: {
           limit: parseInt(req.query.limit),
           skip: parseInt(req.query.skip),
+          sort,
         },
       })
       .execPopulate();
