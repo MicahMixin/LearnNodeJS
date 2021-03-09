@@ -4,6 +4,7 @@ const auth = require("../middleware/auth");
 const router = new express.Router();
 const multer = require("multer");
 const sharp = require("sharp");
+const { sendWelcomeEmail, sendCancellationEmail } = require("../email/account");
 
 const upload = multer({
   limits: {
@@ -22,6 +23,7 @@ router.post("/users", async (req, res) => {
   try {
     await user.save();
     const token = await user.generateAuthToken();
+    sendWelcomeEmail(user.email, user.name);
     res.status(201).send({ user, token });
   } catch (error) {
     res.status(400).json({ Error: error });
@@ -68,7 +70,9 @@ router.patch("/users/me", auth, async (req, res) => {
 
 router.delete("/users/me", auth, async (req, res) => {
   try {
+    const id = req.user._id;
     await req.user.remove();
+    sendCancellationEmail(req.user.email, req.user.name);
     return res.status(202).send(`User ${id} has been deleted successfully`);
   } catch (error) {
     res.status(500).json({ Error: error });

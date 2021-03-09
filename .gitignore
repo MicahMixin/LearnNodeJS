@@ -108,6 +108,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.env
 
 # Spyder project settings
 .spyderproject
@@ -144,3 +145,7 @@ cache/
 # App
 app/src/config.ts
 node_modules
+
+# Images
+images
+avatars
