@@ -59,11 +59,3 @@ test("Get user profile", async () => {
     .send()
     .expect(200);
 });
-
-// test("Get user profile", async () => {
-//     await request(app)
-//       .get("/users/me")
-//       .set("Authorization", `Bearer ${userProfileTest.tokens[0].token}`)
-//       .send()
-//       .expect(200);
-//   });
